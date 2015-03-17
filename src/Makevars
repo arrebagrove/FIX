@@ -1,0 +1,13 @@
+# See Section 1.2.1 "Using 'Makevars'" of Writing R Extensions
+# cran.r-project.org/doc/manuals/R-exts.pdf
+
+PKG_CFLAGS=
+PKG_CPPFLAGS=-Iquickfix/include -I.
+PKG_LIBS=-Lquickfix/lib -lquickfix
+.PHONY: all quickfix/src/C++/.libs/libquickfix.so.14.0.0
+all: $(SHLIB)
+$(SHLIB): quickfix/src/C++/.libs/libquickfix.so.14.0.0
+
+quickfix/src/C++/.libs/libquickfix.so.14.0.0:
+	@(cd quickfix && ./bootstrap && ./configure && $(MAKE) )
+	@(cp quickfix/src/C++/.libs/libquickfix.so.14.0.0 libquickfix.so)
