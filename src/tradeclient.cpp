@@ -59,7 +59,7 @@ void buyStock(std::string ticker, double price, double quantity)
   }
   catch ( std::exception & e )
   {
-    std::cout << e.what();
+    //std::cout << e.what();
   }
 }
 
@@ -85,7 +85,7 @@ void sellStock(std::string ticker, double price, double quantity)
   }
   catch ( std::exception & e )
   {
-    std::cout << e.what();
+    //std::cout << e.what();
   }
 }
 

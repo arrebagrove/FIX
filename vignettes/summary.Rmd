@@ -1,0 +1,49 @@
+---
+title: "Summary"
+author: "Sajid Zaidi & Pankaj Kumar"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{summary}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+The pairFIX package allows a user to interact with their broker directly via R. The FIX protocol is used to communicate with the broker. This allows realtime trading and exchange of portfolio and price information.
+
+As an example application, this package implements pairs trading. A user must first select 2 stocks, and obtain historical price information. An example dataset has been provided in this package, called "price.pair.history". 
+
+Next, the user runs the EstimateModel function, which will run a regression to predict the price of one stock from the another. This will return various parameters of the model, such as the regression coefficient and the vector of residuals. The Pair trading model seeks to test if these residuals are "stationary", meaning their mean and variance does not change over time. Thus, if the residual ever becomes too low or too high (one stock is overpriced relative to the other), the trader should purchase the lower priced stock and sell the higher priced one.
+
+The user can run the RecommendTrade function to see if a trade is recommended based on today's stock prices. This function will perform an Augmented Dickey Fuller test and a Phillips-Perron test to see if the vector of residuals returned by EstimateModel is a stationary process, roughly meaning that the two stocks move together. If this is the case, the RecommendTrade function checks whether the residual for today's prices is more than a given threshold times the standard deviation. If so it recommends a trade.
+
+The user can use this information to execute the trade directly from R, using the FIX engine.
+
+For purposes of testing on the STAT290 server, we have provided a local server emulator for the FIX engine, so buy and sell orders can be executed from this package. The local server will simply accept all trades.
+
+The following code is an example use case
+
+```
+library("pairFIX")
+data(stock.prices.today)
+data(stock.prices.hist)
+
+#select 2 stocks
+price.pair.history <- stock.prices.hist[,c("AAPL.Adjusted","AMZN.Adjusted")]
+#could also get todays prices from FIX engine
+price.pair.today   <- stock.prices.today[,c("AAPL.Adjusted","AMZN.Adjusted")]
+
+#Estimate parameters & plot spread
+model <- EstimateModel(price.pair.history, method = lm)
+plot(model$spread)
+
+#check if trade is recommended
+trade=RecommendTrade(model,price.pair.today,0.05)
+print(trade)
+
+#for sake of example, assume AAPL is recommended buy
+#example code to buy and sell from FIX engine
+
+buyStock(AAPL,stock.prices.today[,"AAPL.Adjusted"],100)
+sellStock(AMZN,stock.prices.today[,"AMZN.Adjusted"],100)
+```
