@@ -1,13 +1,23 @@
-Package: FIX
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
-Authors@R: 'Pankaj Kumar <pankajk81@gmail.com> [aut, cre]'
-Description: What the package does (one paragraph)
-Depends: R (>= 3.1.2)
-License: GPL (>= 2)
+Package: pairFIX
+Type: Package
+Title: Pairs Trading via FIX engine
+Version: 1.0
+Date: 2015-03-18
+Authors@R: c(person("Sajid", "Zaidi", email = "sajidsrzaidi@gmail.com",  role=c("aut", "cre")),
+  person("Pankaj", "Kumar", email = "pankajk81@gmail.com", role="aut"))
+Description: This package implements a simple pair trading model and also allows the user
+  to execute trades via the FIX engine. The user can download stock price data and
+  portolio data from their broker via FIX, can estimate a pairs trading model, 
+  make trading recommendations based on this model, and then execute trades based
+  on these recommendations via the FIX engine.
+License: GPL-2
 LazyData: true
-Packaged: 2015-02-16 15:33:08 UTC; pankaj.kumar
-Author: 'Pankaj Kumar' [aut, cre]
-Maintainer: 'Pankaj Kumar' <pankajk81@gmail.com>
+Depends: R (>= 3.1.0)
+Suggests: knitr
+VignetteBuilder: knitr
+Packaged: 2015-03-19 03:23:57 UTC; sajid
+Author: Sajid Zaidi [aut, cre],
+  Pankaj Kumar [aut]
+Maintainer: Sajid Zaidi <sajidsrzaidi@gmail.com>
 LinkingTo: Rcpp
-Imports: methods, Rcpp (>= 0.11.5)
+Imports: methods, Rcpp (>= 0.11.5), R6, zoo, tseries, xts

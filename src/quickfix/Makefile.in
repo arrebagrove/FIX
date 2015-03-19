@@ -216,7 +216,7 @@ sbindir = @sbindir@
 sharedstatedir = @sharedstatedir@
 sysconfdir = @sysconfdir@
 target_alias = @target_alias@
-SUBDIRS = UnitTest++ src bin spec test examples doc
+SUBDIRS = UnitTest++ src bin spec test examples
 
 # Install pkgconf definition
 pkgconfdir = $(libdir)/pkgconfig

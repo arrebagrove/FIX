@@ -9619,7 +9619,7 @@ m4trace:configure.in:475: -2- AH_OUTPUT([SELECT_MODIFIES_TIMEVAL], [/* select st
 m4trace:configure.in:477: -1- _m4_warn([obsolete], [The macro `AC_TRY_RUN' is obsolete.
 You should run autoupdate.], [autoconf/general.m4:2289: AC_TRY_RUN is expanded from...
 configure.in:477: the top level])
-m4trace:configure.in:510: -1- AC_CONFIG_FILES([quickfix.pc
+m4trace:configure.in:508: -1- AC_CONFIG_FILES([quickfix.pc
 	Makefile
 	src/Makefile
 	src/C++/Makefile
@@ -9647,12 +9647,10 @@ m4trace:configure.in:510: -1- AC_CONFIG_FILES([quickfix.pc
 	examples/tradeclientgui/banzai/src/Makefile
 	examples/tradeclientgui/banzai/src/quickfix/Makefile
 	examples/tradeclientgui/banzai/src/quickfix/banzai/Makefile
-	examples/tradeclientgui/banzai/src/quickfix/banzai/ui/Makefile
-	doc/Makefile
-	doc/html/Makefile])
-m4trace:configure.in:510: -1- _m4_warn([obsolete], [AC_OUTPUT should be used without arguments.
+	examples/tradeclientgui/banzai/src/quickfix/banzai/ui/Makefile])
+m4trace:configure.in:508: -1- _m4_warn([obsolete], [AC_OUTPUT should be used without arguments.
 You should run autoupdate.], [])
-m4trace:configure.in:510: -1- AC_SUBST([LIB@&t@OBJS], [$ac_libobjs])
-m4trace:configure.in:510: -1- AC_SUBST([LTLIBOBJS], [$ac_ltlibobjs])
-m4trace:configure.in:510: -1- _AC_AM_CONFIG_HEADER_HOOK([$ac_file])
-m4trace:configure.in:510: -1- _AM_OUTPUT_DEPENDENCY_COMMANDS
+m4trace:configure.in:508: -1- AC_SUBST([LIB@&t@OBJS], [$ac_libobjs])
+m4trace:configure.in:508: -1- AC_SUBST([LTLIBOBJS], [$ac_ltlibobjs])
+m4trace:configure.in:508: -1- _AC_AM_CONFIG_HEADER_HOOK([$ac_file])
+m4trace:configure.in:508: -1- _AM_OUTPUT_DEPENDENCY_COMMANDS

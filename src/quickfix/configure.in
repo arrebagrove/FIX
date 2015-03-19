@@ -505,6 +505,4 @@ AC_OUTPUT(
 	examples/tradeclientgui/banzai/src/Makefile
 	examples/tradeclientgui/banzai/src/quickfix/Makefile
 	examples/tradeclientgui/banzai/src/quickfix/banzai/Makefile
-	examples/tradeclientgui/banzai/src/quickfix/banzai/ui/Makefile
-	doc/Makefile
-	doc/html/Makefile)
+	examples/tradeclientgui/banzai/src/quickfix/banzai/ui/Makefile)

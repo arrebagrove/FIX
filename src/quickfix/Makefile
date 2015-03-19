@@ -216,7 +216,7 @@ sbindir = ${exec_prefix}/sbin
 sharedstatedir = ${prefix}/com
 sysconfdir = ${prefix}/etc
 target_alias = 
-SUBDIRS = UnitTest++ src bin spec test examples doc
+SUBDIRS = UnitTest++ src bin spec test examples
 
 # Install pkgconf definition
 pkgconfdir = $(libdir)/pkgconfig

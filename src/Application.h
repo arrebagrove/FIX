@@ -1,24 +1,3 @@
-/* -*- C++ -*- */
-
-/****************************************************************************
-** Copyright (c) quickfixengine.org  All rights reserved.
-**
-** This file is part of the QuickFIX FIX Engine
-**
-** This file may be distributed under the terms of the quickfixengine.org
-** license as defined by quickfixengine.org and appearing in the file
-** LICENSE included in the packaging of this file.
-**
-** This file is provided AS IS with NO WARRANTY OF ANY KIND, INCLUDING THE
-** WARRANTY OF DESIGN, MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-**
-** See http://www.quickfixengine.org/LICENSE for licensing information.
-**
-** Contact ask@quickfixengine.org if any conditions of this licensing are
-** not clear to you.
-**
-****************************************************************************/
-
 #ifndef TRADECLIENT_APPLICATION_H
 #define TRADECLIENT_APPLICATION_H
 
@@ -73,8 +52,10 @@ class Application :
       public FIX::MessageCracker
 {
 public:
+  typedef std::map< std::string, std::vector< std::pair<double, double> > > PortfolioType;
   void sell(std::string ticker, double price, double quantity);
   void buy(std::string ticker, double price, double quantity);
+  PortfolioType getPortfolio() {return portfolio;}
 
   volatile bool isLoggedOut;
   volatile bool isLoggedOn;
@@ -104,54 +85,7 @@ private:
   void onMessage( const FIX50::ExecutionReport&, const FIX::SessionID& );
   void onMessage( const FIX50::OrderCancelReject&, const FIX::SessionID& );
 
-
-  std::map< std::string, std::vector< std::pair<double, double> > > portfolio;
-/*
-  void queryEnterOrder();
-  void queryCancelOrder();
-  void queryReplaceOrder();
-  void queryMarketDataRequest();
-
-  FIX40::NewOrderSingle queryNewOrderSingle40();
-  FIX41::NewOrderSingle queryNewOrderSingle41();
-  FIX42::NewOrderSingle queryNewOrderSingle42();
-  FIX43::NewOrderSingle queryNewOrderSingle43();
-  FIX44::NewOrderSingle queryNewOrderSingle44();
-  FIX50::NewOrderSingle queryNewOrderSingle50();
-  FIX40::OrderCancelRequest queryOrderCancelRequest40();
-  FIX41::OrderCancelRequest queryOrderCancelRequest41();
-  FIX42::OrderCancelRequest queryOrderCancelRequest42();
-  FIX43::OrderCancelRequest queryOrderCancelRequest43();
-  FIX44::OrderCancelRequest queryOrderCancelRequest44();
-  FIX50::OrderCancelRequest queryOrderCancelRequest50();
-  FIX40::OrderCancelReplaceRequest queryCancelReplaceRequest40();
-  FIX41::OrderCancelReplaceRequest queryCancelReplaceRequest41();
-  FIX42::OrderCancelReplaceRequest queryCancelReplaceRequest42();
-  FIX43::OrderCancelReplaceRequest queryCancelReplaceRequest43();
-  FIX44::OrderCancelReplaceRequest queryCancelReplaceRequest44();
-  FIX50::OrderCancelReplaceRequest queryCancelReplaceRequest50();
-  FIX43::MarketDataRequest queryMarketDataRequest43();
-  FIX44::MarketDataRequest queryMarketDataRequest44();
-  FIX50::MarketDataRequest queryMarketDataRequest50();
-
-  void queryHeader( FIX::Header& header );
-  char queryAction();
-  int queryVersion();
-  bool queryConfirm( const std::string& query );
-
-  FIX::SenderCompID querySenderCompID();
-  FIX::TargetCompID queryTargetCompID();
-  FIX::TargetSubID queryTargetSubID();
-  FIX::ClOrdID queryClOrdID();
-  FIX::OrigClOrdID queryOrigClOrdID();
-  FIX::Symbol querySymbol();
-  FIX::Side querySide();
-  FIX::OrderQty queryOrderQty();
-  FIX::OrdType queryOrdType();
-  FIX::Price queryPrice();
-  FIX::StopPx queryStopPx();
-  FIX::TimeInForce queryTimeInForce();
-*/
+  PortfolioType portfolio;
 };
 
 #endif

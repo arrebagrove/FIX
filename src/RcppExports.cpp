@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // buyStock
 void buyStock(std::string ticker, double price, double quantity);
-RcppExport SEXP FIX_buyStock(SEXP tickerSEXP, SEXP priceSEXP, SEXP quantitySEXP) {
+RcppExport SEXP pairFIX_buyStock(SEXP tickerSEXP, SEXP priceSEXP, SEXP quantitySEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< std::string >::type ticker(tickerSEXP);
@@ -19,7 +19,7 @@ END_RCPP
 }
 // sellStock
 void sellStock(std::string ticker, double price, double quantity);
-RcppExport SEXP FIX_sellStock(SEXP tickerSEXP, SEXP priceSEXP, SEXP quantitySEXP) {
+RcppExport SEXP pairFIX_sellStock(SEXP tickerSEXP, SEXP priceSEXP, SEXP quantitySEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< std::string >::type ticker(tickerSEXP);
@@ -30,8 +30,8 @@ BEGIN_RCPP
 END_RCPP
 }
 // getPortfolio
-bool getPortfolio();
-RcppExport SEXP FIX_getPortfolio() {
+std::vector<std::string> getPortfolio();
+RcppExport SEXP pairFIX_getPortfolio() {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;

@@ -2,14 +2,14 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 buyStock <- function(ticker, price, quantity) {
-    invisible(.Call('FIX_buyStock', PACKAGE = 'FIX', ticker, price, quantity))
+    invisible(.Call('pairFIX_buyStock', PACKAGE = 'pairFIX', ticker, price, quantity))
 }
 
 sellStock <- function(ticker, price, quantity) {
-    invisible(.Call('FIX_sellStock', PACKAGE = 'FIX', ticker, price, quantity))
+    invisible(.Call('pairFIX_sellStock', PACKAGE = 'pairFIX', ticker, price, quantity))
 }
 
 getPortfolio <- function() {
-    .Call('FIX_getPortfolio', PACKAGE = 'FIX')
+    .Call('pairFIX_getPortfolio', PACKAGE = 'pairFIX')
 }
 

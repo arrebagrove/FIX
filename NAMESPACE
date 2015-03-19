@@ -1,5 +1,5 @@
 #exportPattern("^[^\\.]")
 useDynLib(libquickfix)
-useDynLib(FIX)
+useDynLib(pairFIX)
 exportPattern("^[[:alpha:]]+")
 import(methods, Rcpp, R6, zoo, tseries)
