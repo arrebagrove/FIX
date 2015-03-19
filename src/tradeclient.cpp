@@ -51,8 +51,8 @@ SocketConnectPort=56156\n\
 #SocketAcceptPort=56156\n\
 SocketConnectHost=127.0.0.1\n\
 DataDictionary=/root/transportData/spec/FIX42.xml\n\
-StartTime=07:00:00\n\
-EndTime=23:00:00\n\
+StartTime=00:00:05\n\
+EndTime=23:55:00\n\
 ";
 
 Application application;
@@ -95,8 +95,6 @@ void sellStock(std::string ticker, double price, double quantity)
     FIX::FileStoreFactory storeFactory( settings );
     FIX::FileLogFactory logFactory(settings);
     FIX::SocketInitiator initiator( application, storeFactory, settings, logFactory);
-    FILE *ofp = fopen("/tmp/debug.txt", "a");
-    fprintf(ofp, "1 calling initiator start\n");
     initiator.start();
     while(!initiator.isLoggedOn()) {}
     application.sell(ticker, price, quantity);
