@@ -1,5 +1,3 @@
-library(testthat)
-library(pairFIX)
 
 x    <- rnorm(1000)+50
 y    <- (x - 2) + rnorm(1000)+50
