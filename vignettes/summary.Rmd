@@ -9,7 +9,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
-The pairFIX package allows a user to interact with their broker directly via R. The FIX protocol is used to communicate with the broker. This allows realtime trading and exchange of portfolio and price information.
+The pairFIX package allows a user to interact with their broker directly via R. The FIX protocol is used to communicate with the broker. This allows realtime trading and exchange of portfolio and price information. The whole Quickfix engine is available behind the scenes in R to talk FIX to brokers and others.
 
 As an example application, this package implements pairs trading. A user must first select 2 stocks, and obtain historical price information. An example dataset has been provided in this package, called "price.pair.history". 
 
@@ -19,7 +19,9 @@ The user can run the RecommendTrade function to see if a trade is recommended ba
 
 The user can use this information to execute the trade directly from R, using the FIX engine.
 
-For purposes of testing on the STAT290 server, we have provided a local server emulator for the FIX engine, so buy and sell orders can be executed from this package. The local server will simply accept all trades.
+For purposes of testing on the STAT290 server, we have provided a local server emulator for the FIX engine, so buy and sell orders can be executed from this package. The local server will simply accept all trades. Ths config for the server is also provided. It is present in the src/quickfix/examples/executor directory. The config file is also in the same directory. 
+
+Installing this package requires a properly setup compilation environment with gcc version > 4.4 and libgfortran and libxml2 properly installed
 
 The following code is an example use case
 
@@ -46,4 +48,7 @@ print(trade)
 
 buyStock(AAPL,stock.prices.today[,"AAPL.Adjusted"],100)
 sellStock(AMZN,stock.prices.today[,"AMZN.Adjusted"],100)
+getPortfolio()
+#AAPL,105.00,100
+#AMZN,301.00,100
 ```

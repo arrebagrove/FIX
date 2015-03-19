@@ -13,7 +13,7 @@ Description: This package implements a simple pair trading model and also allows
 License: GPL-2
 LazyData: true
 Depends: R (>= 3.1.0)
-Suggests: knitr
+Suggests: knitr, testthat
 VignetteBuilder: knitr
 Packaged: 2015-03-19 03:23:57 UTC; sajid
 Author: Sajid Zaidi [aut, cre],
