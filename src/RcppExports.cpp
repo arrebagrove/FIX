@@ -6,26 +6,27 @@
 using namespace Rcpp;
 
 // buyStock
-void buyStock(std::string ticker, int quantity);
-RcppExport SEXP FIX_buyStock(SEXP tickerSEXP, SEXP quantitySEXP) {
+void buyStock(std::string ticker, double price, double quantity);
+RcppExport SEXP FIX_buyStock(SEXP tickerSEXP, SEXP priceSEXP, SEXP quantitySEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< std::string >::type ticker(tickerSEXP);
-    Rcpp::traits::input_parameter< int >::type quantity(quantitySEXP);
-    buyStock(ticker, quantity);
+    Rcpp::traits::input_parameter< double >::type price(priceSEXP);
+    Rcpp::traits::input_parameter< double >::type quantity(quantitySEXP);
+    buyStock(ticker, price, quantity);
     return R_NilValue;
 END_RCPP
 }
 // sellStock
-bool sellStock(std::string ticker, int quantity);
-RcppExport SEXP FIX_sellStock(SEXP tickerSEXP, SEXP quantitySEXP) {
+void sellStock(std::string ticker, double price, double quantity);
+RcppExport SEXP FIX_sellStock(SEXP tickerSEXP, SEXP priceSEXP, SEXP quantitySEXP) {
 BEGIN_RCPP
-    Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< std::string >::type ticker(tickerSEXP);
-    Rcpp::traits::input_parameter< int >::type quantity(quantitySEXP);
-    __result = Rcpp::wrap(sellStock(ticker, quantity));
-    return __result;
+    Rcpp::traits::input_parameter< double >::type price(priceSEXP);
+    Rcpp::traits::input_parameter< double >::type quantity(quantitySEXP);
+    sellStock(ticker, price, quantity);
+    return R_NilValue;
 END_RCPP
 }
 // getPortfolio

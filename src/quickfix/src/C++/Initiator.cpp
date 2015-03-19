@@ -225,15 +225,25 @@ bool Initiator::isDisconnected( const SessionID& sessionID )
 void Initiator::start() throw ( ConfigError, RuntimeError )
 { QF_STACK_PUSH(Initiator::start)
 
+  FILE *ofp = fopen("/tmp/debug.txt", "a");
+  fprintf(ofp, "2 Initiator start\n");
+  fclose(ofp);
   m_stop = false;
   onConfigure( m_settings );
   onInitialize( m_settings );
 
   HttpServer::startGlobal( m_settings );
-
+  ofp = fopen("/tmp/debug.txt", "a");
+  fprintf(ofp, "4 http server start\n");
+  fclose(ofp);
   if( !thread_spawn( &startThread, this, m_threadid ) )
+  {
+    ofp = fopen("/tmp/debug.txt", "a");
+    fprintf(ofp, "4.5 cannot spawn thread\n");
+    fclose(ofp);
+   
     throw RuntimeError("Unable to spawn thread");
-
+  }
   QF_STACK_POP
 }
 
@@ -331,6 +341,10 @@ bool Initiator::isLoggedOn()
 THREAD_PROC Initiator::startThread( void* p )
 { QF_STACK_TRY
   QF_STACK_PUSH(Initiator::startThread)
+  
+  FILE *ofp = fopen("/tmp/debug.txt", "a");
+  fprintf(ofp, "5 Initiator Thread started \n");
+  fclose(ofp);
 
   Initiator * pInitiator = static_cast < Initiator* > ( p );
   pInitiator->onStart();

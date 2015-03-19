@@ -17,21 +17,140 @@
 **
 ****************************************************************************/
 
-#ifdef _MSC_VER
-#pragma warning( disable : 4503 4355 4786 )
-#else
-#include "config.h"
-#endif
-
 #include "quickfix/FileStore.h"
 #include "quickfix/SocketInitiator.h"
 #include "quickfix/SessionSettings.h"
 #include "Application.h"
 #include <string>
+#include <sstream>
 #include <iostream>
 #include <fstream>
+#include <unistd.h>
 
-#include "../../src/getopt-repl.h"
+//#include <Rcpp.h>
+//using namespace Rcpp;
+
+static std::string settings =
+"\n\
+[DEFAULT]\n\
+ConnectionType=initiator\n\
+ReconnectInterval=5\n\
+SenderCompID=SENDER\n\
+DefaultApplVerID=FIX.4.2\n\
+ResetOnLogon=Y\n\
+\n\
+[SESSION]\n\
+BeginString=FIX.4.2\n\
+TargetCompID=EXEC\n\
+HeartBtInt=5\n\
+SocketConnectPort=56156\n\
+#SocketAcceptPort=56156\n\
+SocketConnectHost=127.0.0.1\n\
+DataDictionary=/root/transportData/spec/FIX42.xml\n\
+StartTime=07:00:00\n\
+EndTime=23:00:00\n\
+FileLogPath=/tmp/fix/log\n\
+FileStorePath=store\n\
+";
+
+Application application;
+// [[Rcpp::export]]
+void buyStock(std::string ticker, float price, int quantity)
+{
+  try
+  {
+    std::istringstream settingsStream(settings);
+    FIX::SessionSettings settings( settingsStream );
+
+    application.isLoggedOn = false;
+    application.isLoggedOut = false;
+    FIX::FileStoreFactory storeFactory( settings );
+    FIX::SocketInitiator initiator( application, storeFactory, settings );
+
+    initiator.start();
+    application.buy(ticker, price, quantity);
+    initiator.stop();
+    // wait for logout to come
+    while(!application.isLoggedOut)
+    {
+      sleep(1);
+    }
+  }
+  catch ( std::exception & e )
+  {
+    std::cout << e.what();
+  }
+}
+
+// [[Rcpp::export]]
+void sellStock(std::string ticker, double price, int quantity)
+{
+  try
+  {
+    std::istringstream settingsStream(settings);
+    FIX::SessionSettings settings( settingsStream );
+
+    application.isLoggedOn = false;
+    application.isLoggedOut = false;
+    FIX::FileStoreFactory storeFactory( settings );
+    FIX::SocketInitiator initiator( application, storeFactory, settings );
+
+    initiator.start();
+    application.sell(ticker, price, quantity);
+    initiator.stop();
+    // wait for logout to come
+    while(!application.isLoggedOut)
+    {
+      sleep(1);
+    }
+  }
+  catch ( std::exception & e )
+  {
+    std::cout << e.what();
+  }
+}
+
+// [[Rcpp::export]]
+bool getPortfolio()
+{
+  return true;
+}
+
+int main()
+{
+//  buyStock(std::string("MSFT"), 10);
+  /*    buyStock(std::string("MSFT"), 40.56, 10);
+  buyStock(std::string("GOOG"), 400.56, 10);
+ buyStock(std::string("MSFT"), 40.56, 10);
+  buyStock(std::string("GOOG"), 400.56, 10);
+ buyStock(std::string("MSFT"), 40.56, 10);
+  buyStock(std::string("GOOG"), 400.56, 10);
+ buyStock(std::string("MSFT"), 40.56, 10);
+  buyStock(std::string("GOOG"), 400.56, 10);*/
+ buyStock(std::string("MSFT"), 40.56, 10);
+  buyStock(std::string("GOOG"), 400.56, 10);
+  sellStock(std::string("GOOG"), 400.90, 20);
+  sellStock(std::string("MSFT"), 60, 20);
+  return 0;
+}
+#if 0
+class FixConnection
+{
+public:
+FixConnection(std::string compId, std::string pass) {}
+void buyStock() {}
+void sellStock() {}
+void getPortfolio() {}
+};
+
+RCPP_MODULE(FIX){
+    class_<FixConnection>("FixConnection")
+        .constructor<std::string,std::string>()
+        .method("buyStock", &FixConnection::buyStock)
+        .method("sellStock", &FixConnection::sellStock)
+        .method("getPortfolio", &FixConnection::getPortfolio)
+        ;        
+};
 
 int main( int argc, char** argv )
 {
@@ -63,3 +182,4 @@ int main( int argc, char** argv )
     return 1;
   }
 }
+#endif

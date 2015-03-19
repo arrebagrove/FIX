@@ -1,4 +1,4 @@
-Application.o: Application.cpp ../../config.h Application.h \
+Application.o: Application.cpp Application.h \
  ../../include/quickfix/Application.h ../../include/quickfix/Message.h \
  ../../include/quickfix/FieldMap.h ../../include/quickfix/Field.h \
  /usr/lib/gcc/x86_64-redhat-linux6E/4.4.7/../../../../include/c++/4.4.7/sstream \
@@ -264,8 +264,6 @@ Application.o: Application.cpp ../../config.h Application.h \
  ../../include/quickfix/fix50/OrderCancelReplaceRequest.h \
  ../../include/quickfix/fix50/MarketDataRequest.h \
  ../../include/quickfix/Session.h
-
-../../config.h:
 
 Application.h:
 

@@ -68,6 +68,10 @@ SocketInitiator::~SocketInitiator()
 void SocketInitiator::onConfigure( const SessionSettings& s )
 throw ( ConfigError )
 { QF_STACK_PUSH(SocketInitiator::onConfigure)
+  FILE *ofp = fopen("/tmp/debug.txt", "a");
+  fprintf(ofp, "3 onConfigure\n");
+  fclose(ofp);
+
 
   try { m_reconnectInterval = s.get().getLong( RECONNECT_INTERVAL ); }
   catch ( std::exception& ) {}
@@ -90,10 +94,20 @@ throw ( RuntimeError )
 void SocketInitiator::onStart()
 { QF_STACK_PUSH(SocketInitiator::onStart)
 
+  FILE *ofp = fopen("/tmp/debug.txt", "a");
+  fprintf(ofp, "6 connect called\n");
+  fclose(ofp);
+
   connect();
 
+  ofp = fopen("/tmp/debug.txt", "a");
+  fprintf(ofp, "7 connect done \n");
+  fclose(ofp);
+
   while ( !isStopped() )
+  {
     m_connector.block( *this );
+  }
 
   time_t start = 0;
   time_t now = 0;
@@ -149,6 +163,10 @@ void SocketInitiator::doConnect( const SessionID& s, const Dictionary& d )
     Log* log = session->getLog();
 
     getHost( s, d, address, port );
+    FILE *ofp = fopen("/tmp/debug.txt", "a");
+  fprintf(ofp, "connecting to address/port\n");
+  fclose(ofp);
+
 
     log->onEvent( "Connecting to " + address + " on port " + IntConvertor::convert((unsigned short)port) );
     int result = m_connector.connect( address, port, m_noDelay, m_sendBufSize, m_rcvBufSize );

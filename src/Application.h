@@ -73,8 +73,12 @@ class Application :
       public FIX::MessageCracker
 {
 public:
-  void run();
+  void sell(std::string ticker, double price, double quantity);
+  void buy(std::string ticker, double price, double quantity);
 
+  volatile bool isLoggedOut;
+  volatile bool isLoggedOn;
+  Application();
 private:
   void onCreate( const FIX::SessionID& ) {}
   void onLogon( const FIX::SessionID& sessionID );
@@ -83,7 +87,7 @@ private:
   void toApp( FIX::Message&, const FIX::SessionID& )
   throw( FIX::DoNotSend );
   void fromAdmin( const FIX::Message&, const FIX::SessionID& )
-  throw( FIX::FieldNotFound, FIX::IncorrectDataFormat, FIX::IncorrectTagValue, FIX::RejectLogon ) {}
+  throw( FIX::FieldNotFound, FIX::IncorrectDataFormat, FIX::IncorrectTagValue, FIX::RejectLogon );
   void fromApp( const FIX::Message& message, const FIX::SessionID& sessionID )
   throw( FIX::FieldNotFound, FIX::IncorrectDataFormat, FIX::IncorrectTagValue, FIX::UnsupportedMessageType );
 
@@ -99,6 +103,9 @@ private:
   void onMessage( const FIX44::OrderCancelReject&, const FIX::SessionID& );
   void onMessage( const FIX50::ExecutionReport&, const FIX::SessionID& );
   void onMessage( const FIX50::OrderCancelReject&, const FIX::SessionID& );
+
+
+  std::map< std::string, std::vector< std::pair<double, double> > > portfolio;
 /*
   void queryEnterOrder();
   void queryCancelOrder();

@@ -1,7 +1,6 @@
-tradeclient.o: tradeclient.cpp ../../config.h \
- ../../include/quickfix/FileStore.h ../../include/quickfix/MessageStore.h \
- ../../include/quickfix/Message.h ../../include/quickfix/FieldMap.h \
- ../../include/quickfix/Field.h \
+tradeclient.o: tradeclient.cpp ../../include/quickfix/FileStore.h \
+ ../../include/quickfix/MessageStore.h ../../include/quickfix/Message.h \
+ ../../include/quickfix/FieldMap.h ../../include/quickfix/Field.h \
  /usr/lib/gcc/x86_64-redhat-linux6E/4.4.7/../../../../include/c++/4.4.7/sstream \
  /usr/lib/gcc/x86_64-redhat-linux6E/4.4.7/../../../../include/c++/4.4.7/istream \
  /usr/lib/gcc/x86_64-redhat-linux6E/4.4.7/../../../../include/c++/4.4.7/ios \
@@ -274,9 +273,7 @@ tradeclient.o: tradeclient.cpp ../../config.h \
  ../../include/quickfix/fix50/OrderCancelRequest.h \
  ../../include/quickfix/fix50/OrderCancelReject.h \
  ../../include/quickfix/fix50/OrderCancelReplaceRequest.h \
- ../../include/quickfix/fix50/MarketDataRequest.h ../../src/getopt-repl.h
-
-../../config.h:
+ ../../include/quickfix/fix50/MarketDataRequest.h
 
 ../../include/quickfix/FileStore.h:
 
@@ -951,5 +948,3 @@ Application.h:
 ../../include/quickfix/fix50/OrderCancelReplaceRequest.h:
 
 ../../include/quickfix/fix50/MarketDataRequest.h:
-
-../../src/getopt-repl.h:
