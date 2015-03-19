@@ -1,4 +1,4 @@
-#sajid code begins here
+#sajid code begins here, based on Pankaj's initial implementation
 #' Estimate model of pair trade
 #' Assumption is that difference between log(price) of two stocks is random walk
 #' @param price.pair A data frame with two columns of prices, one for each stock
