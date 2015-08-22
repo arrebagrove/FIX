@@ -13,24 +13,24 @@
 
 using namespace Rcpp;
 
-static std::string settings =
+static std::string _settings =
 "\n\
 [DEFAULT]\n\
 ConnectionType=initiator\n\
 FileLogPath=/tmp/fix/log\n\
 FileStorePath=/tmp/fix/store\n\
 ReconnectInterval=5\n\
-SenderCompID=SENDER\n\
+SenderCompID=IB\n\
 DefaultApplVerID=FIX.4.2\n\
 ResetOnLogon=Y\n\
 \n\
 [SESSION]\n\
 BeginString=FIX.4.2\n\
-TargetCompID=EXEC\n\
+TargetCompID=IB\n\
 HeartBtInt=5\n\
-SocketConnectPort=56156\n\
+SocketConnectPort=4000\n\
 #SocketAcceptPort=56156\n\
-SocketConnectHost=127.0.0.1\n\
+SocketConnectHost=172.16.55.1\n\
 DataDictionary=/root/transportData/spec/FIX42.xml\n\
 StartTime=00:00:05\n\
 EndTime=23:55:00\n\
@@ -38,18 +38,23 @@ EndTime=23:55:00\n\
 
 Application application;
 // [[Rcpp::export]]
+void initFIX(std::string settings)
+{
+   _settings = settings;
+}
+// [[Rcpp::export]]
 void buyStock(std::string ticker, double price, double quantity)
 {
   try
   {
-    std::istringstream settingsStream(settings);
-    FIX::SessionSettings settings( settingsStream );
+    std::istringstream settingsStream(_settings);
+    FIX::SessionSettings sessionSettings( settingsStream );
 
     application.isLoggedOn = false;
     application.isLoggedOut = false;
-    FIX::FileStoreFactory storeFactory( settings );
-    FIX::FileLogFactory logFactory(settings);
-    FIX::SocketInitiator initiator( application, storeFactory, settings, logFactory );
+    FIX::FileStoreFactory storeFactory( sessionSettings );
+    FIX::FileLogFactory logFactory(sessionSettings);
+    FIX::SocketInitiator initiatr( application, storeFactory, sessionSettings, logFactory );
     initiator.start();
     while(!initiator.isLoggedOn()) {}
     application.buy(ticker, price, quantity);
@@ -59,7 +64,7 @@ void buyStock(std::string ticker, double price, double quantity)
   }
   catch ( std::exception & e )
   {
-    //std::cout << e.what();
+    std::cout << e.what();
   }
 }
 
@@ -68,14 +73,14 @@ void sellStock(std::string ticker, double price, double quantity)
 {
   try
   {
-    std::istringstream settingsStream(settings);
-    FIX::SessionSettings settings( settingsStream );
+    std::istringstream settingsStream(_settings);
+    FIX::SessionSettings sessionSettings( settingsStream );
 
     application.isLoggedOn = false;
     application.isLoggedOut = false;
-    FIX::FileStoreFactory storeFactory( settings );
-    FIX::FileLogFactory logFactory(settings);
-    FIX::SocketInitiator initiator( application, storeFactory, settings, logFactory);
+    FIX::FileStoreFactory storeFactory( sessionSettings );
+    FIX::FileLogFactory logFactory(sessionSettings);
+    FIX::SocketInitiator initiator( application, storeFactory, sessionSettings, logFactory);
     initiator.start();
     while(!initiator.isLoggedOn()) {}
     application.sell(ticker, price, quantity);

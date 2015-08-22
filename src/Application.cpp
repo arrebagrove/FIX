@@ -14,19 +14,19 @@ Application::Application()
 void Application::onLogon( const FIX::SessionID& sessionID )
 {
   isLoggedOn = true;
-  //std::cout << std::endl << "Logon - " << sessionID << std::endl;
+  std::cout << std::endl << "Logon - " << sessionID << std::endl;
 }
 
 void Application::onLogout( const FIX::SessionID& sessionID )
 {
   isLoggedOut = true;
-  //std::cout << std::endl << "Logout - " << sessionID << std::endl;
+  std::cout << std::endl << "Logout - " << sessionID << std::endl;
 }
 void Application::fromAdmin( const FIX::Message& message, const FIX::SessionID& sessionID)
   throw( FIX::FieldNotFound, FIX::IncorrectDataFormat, FIX::IncorrectTagValue, FIX::RejectLogon )
 {
   crack(message, sessionID);
-  //std::cout << std::endl << "IN: ADMIN "<< message << std::endl;
+  std::cout << std::endl << "IN: ADMIN "<< message << std::endl;
 }
 
 void Application::fromApp( const FIX::Message& message, const FIX::SessionID& sessionID )
@@ -34,7 +34,7 @@ throw( FIX::FieldNotFound, FIX::IncorrectDataFormat, FIX::IncorrectTagValue, FIX
 {
   std::map <int, std::string> headerVals;
   crack( message, sessionID );
-  //std::cout << std::endl << "IN: " << message.toXML() << std::endl;
+  std::cout << std::endl << "IN: " << message.toXML() << std::endl;
   for(FIX::FieldMap::iterator i = message.begin(); i != message.end(); ++i)
   {
     int field = i->first;
@@ -51,7 +51,7 @@ throw( FIX::FieldNotFound, FIX::IncorrectDataFormat, FIX::IncorrectTagValue, FIX
   if (headerVals.count(35) == 1 && headerVals[35] == std::string("8"))
   {
     // This is a order execution
-    //std::cout << "Received an order execution report \n" << std::endl;
+    std::cout << "Received an order execution report \n" << std::endl;
     if (headerVals.count(39) == 1 && headerVals[39] == std::string("2"))
     {
       //std::cout << "Received a fill\n" << std::endl;
@@ -95,7 +95,7 @@ throw( FIX::DoNotSend )
   }
   catch ( FIX::FieldNotFound& ) {}
 
-  //std::cout << std::endl << "OUT: " << message << std::endl;
+  std::cout << std::endl << "OUT: " << message << std::endl;
 }
 
 void Application::onMessage
@@ -129,7 +129,7 @@ void Application::buy(std::string ticker, double price, double quantity)
 {
     std::string clientOrderId("PK");
     std::ostringstream oss;
-    oss << "PK" << clientOrderIdCounter++;
+    oss << clientOrderId << clientOrderIdCounter++ << ".0";
     FIX42::NewOrderSingle newOrderSingle(
         FIX::ClOrdID(oss.str()), FIX::HandlInst('1'), FIX::Symbol(ticker), FIX::Side( FIX::Side_BUY ),
         FIX::TransactTime(), FIX::OrdType_LIMIT );
@@ -139,8 +139,8 @@ void Application::buy(std::string ticker, double price, double quantity)
     newOrderSingle.set( FIX::Price(price) );
 
     FIX::Header& header = newOrderSingle.getHeader();
-    header.setField( FIX::SenderCompID("SENDER") );
-    header.setField( FIX::TargetCompID("EXEC") );
+    header.setField( FIX::SenderCompID("direc592") );
+    header.setField( FIX::TargetCompID("IB") );
     header.setField( FIX::BeginString("FIX.4.2"));
     FIX::Session::sendToTarget( newOrderSingle );
 }
@@ -149,7 +149,7 @@ void Application::sell(std::string ticker, double price, double quantity)
 {
     std::string clientOrderId("PK");
     std::ostringstream oss;
-    oss << "PK" << clientOrderIdCounter++;
+    oss << clientOrderId << clientOrderIdCounter++ << ".0";
     FIX42::NewOrderSingle newOrderSingle(
         FIX::ClOrdID(oss.str()), FIX::HandlInst('1'), FIX::Symbol(ticker), FIX::Side( FIX::Side_SELL ),
         FIX::TransactTime(), FIX::OrdType_LIMIT );
@@ -159,8 +159,8 @@ void Application::sell(std::string ticker, double price, double quantity)
     newOrderSingle.set( FIX::Price(price) );
 
     FIX::Header& header = newOrderSingle.getHeader();
-    header.setField( FIX::SenderCompID("SENDER") );
-    header.setField( FIX::TargetCompID("EXEC") );
+    header.setField( FIX::SenderCompID("direc592") );
+    header.setField( FIX::TargetCompID("IB") );
     header.setField( FIX::BeginString("FIX.4.2"));
     FIX::Session::sendToTarget( newOrderSingle );
 }
