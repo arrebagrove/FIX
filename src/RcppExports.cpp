@@ -5,6 +5,16 @@
 
 using namespace Rcpp;
 
+// initFIX
+void initFIX(std::string settings);
+RcppExport SEXP pairFIX_initFIX(SEXP settingsSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::string >::type settings(settingsSEXP);
+    initFIX(settings);
+    return R_NilValue;
+END_RCPP
+}
 // buyStock
 void buyStock(std::string ticker, double price, double quantity);
 RcppExport SEXP pairFIX_buyStock(SEXP tickerSEXP, SEXP priceSEXP, SEXP quantitySEXP) {
