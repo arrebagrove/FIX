@@ -44,8 +44,57 @@
 #include "quickfix/fix50/OrderCancelReject.h"
 #include "quickfix/fix50/OrderCancelReplaceRequest.h"
 #include "quickfix/fix50/MarketDataRequest.h"
+#include "quickfix/FileStore.h"
+#include "quickfix/FileLog.h"
+#include "quickfix/SocketInitiator.h"
+#include "quickfix/SessionSettings.h"
 
 #include <queue>
+
+class Settings
+{
+public:
+std::string FileLogPath;
+std::string FileStorePath;
+int ReconnectInterval;
+std::string SenderCompID;
+std::string DefaultApplVerID;
+std::string ResetOnLogon;
+
+std::string BeginString;
+std::string TargetCompID;
+int HeartBtInt;
+int SocketConnectPort;
+std::string SocketConnectHost;
+std::string DataDictionary;
+std::string StartTime;
+std::string EndTime;
+
+std::string toString()
+{
+std::ostringstream oss;
+
+oss << "[DEFAULT]\n";
+oss << "ConnectionType=initiator\n";
+oss << "FileLogPath=" << FileLogPath << "\n";
+oss << "FileStorePath=" << FileStorePath << "\n";
+oss << "ReconnectInterval=" << ReconnectInterval << "\n";
+oss << "SenderCompID=" << SenderCompID << "\n";
+oss << "DefaultApplVerID="<< DefaultApplVerID <<"\n";
+oss << "ResetOnLogon=" << ResetOnLogon << "\n";
+oss << "[SESSION]\n";
+oss << "BeginString=" << BeginString << "\n";
+oss << "TargetCompID=" << TargetCompID << "\n";
+oss << "HeartBtInt=" << HeartBtInt << "\n";
+oss << "SocketConnectPort=" << SocketConnectPort << "\n";
+oss << "SocketConnectHost=" << SocketConnectHost << "\n";
+oss << "DataDictionary=" << DataDictionary << "\n";
+oss << "StartTime=" << StartTime << "\n";
+oss << "EndTime=" << EndTime << "\n";
+return oss.str();
+}
+
+};
 
 class Application :
       public FIX::Application,
@@ -60,6 +109,13 @@ public:
   volatile bool isLoggedOut;
   volatile bool isLoggedOn;
   Application();
+  Application(std::string FileLogPath, std::string FileStorePath, int ReconnectInterval,
+              std::string SenderCompID, std::string DefaultApplVerID, std::string ResetOnLogon,
+              std::string BeginString, std::string TargetCompID, int HeartBtInt, 
+              int SocketConnectPort, std::string SocketConnectHost, std::string DataDictionary,
+              std::string StartTime, std::string EndTime);
+  void init();
+  void destroy();
 private:
   void onCreate( const FIX::SessionID& ) {}
   void onLogon( const FIX::SessionID& sessionID );
@@ -71,7 +127,7 @@ private:
   throw( FIX::FieldNotFound, FIX::IncorrectDataFormat, FIX::IncorrectTagValue, FIX::RejectLogon );
   void fromApp( const FIX::Message& message, const FIX::SessionID& sessionID )
   throw( FIX::FieldNotFound, FIX::IncorrectDataFormat, FIX::IncorrectTagValue, FIX::UnsupportedMessageType );
-
+  FIX::SocketInitiator *initiator;
   void onMessage( const FIX40::ExecutionReport&, const FIX::SessionID& );
   void onMessage( const FIX40::OrderCancelReject&, const FIX::SessionID& );
   void onMessage( const FIX41::ExecutionReport&, const FIX::SessionID& );
@@ -85,6 +141,7 @@ private:
   void onMessage( const FIX50::ExecutionReport&, const FIX::SessionID& );
   void onMessage( const FIX50::OrderCancelReject&, const FIX::SessionID& );
 
+  Settings settings;
   PortfolioType portfolio;
 };
 

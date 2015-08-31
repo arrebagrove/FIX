@@ -6,12 +6,34 @@
 using namespace Rcpp;
 
 // initFIX
-void initFIX(std::string settings);
-RcppExport SEXP pairFIX_initFIX(SEXP settingsSEXP) {
+void initFIX(std::string FileLogPath, std::string FileStorePath, int ReconnectInterval, std::string SenderCompID, std::string DefaultApplVerID, std::string ResetOnLogon, std::string BeginString, std::string TargetCompID, int HeartBtInt, int SocketConnectPort, std::string SocketConnectHost, std::string DataDictionary, std::string StartTime, std::string EndTime);
+RcppExport SEXP pairFIX_initFIX(SEXP FileLogPathSEXP, SEXP FileStorePathSEXP, SEXP ReconnectIntervalSEXP, SEXP SenderCompIDSEXP, SEXP DefaultApplVerIDSEXP, SEXP ResetOnLogonSEXP, SEXP BeginStringSEXP, SEXP TargetCompIDSEXP, SEXP HeartBtIntSEXP, SEXP SocketConnectPortSEXP, SEXP SocketConnectHostSEXP, SEXP DataDictionarySEXP, SEXP StartTimeSEXP, SEXP EndTimeSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< std::string >::type settings(settingsSEXP);
-    initFIX(settings);
+    Rcpp::traits::input_parameter< std::string >::type FileLogPath(FileLogPathSEXP);
+    Rcpp::traits::input_parameter< std::string >::type FileStorePath(FileStorePathSEXP);
+    Rcpp::traits::input_parameter< int >::type ReconnectInterval(ReconnectIntervalSEXP);
+    Rcpp::traits::input_parameter< std::string >::type SenderCompID(SenderCompIDSEXP);
+    Rcpp::traits::input_parameter< std::string >::type DefaultApplVerID(DefaultApplVerIDSEXP);
+    Rcpp::traits::input_parameter< std::string >::type ResetOnLogon(ResetOnLogonSEXP);
+    Rcpp::traits::input_parameter< std::string >::type BeginString(BeginStringSEXP);
+    Rcpp::traits::input_parameter< std::string >::type TargetCompID(TargetCompIDSEXP);
+    Rcpp::traits::input_parameter< int >::type HeartBtInt(HeartBtIntSEXP);
+    Rcpp::traits::input_parameter< int >::type SocketConnectPort(SocketConnectPortSEXP);
+    Rcpp::traits::input_parameter< std::string >::type SocketConnectHost(SocketConnectHostSEXP);
+    Rcpp::traits::input_parameter< std::string >::type DataDictionary(DataDictionarySEXP);
+    Rcpp::traits::input_parameter< std::string >::type StartTime(StartTimeSEXP);
+    Rcpp::traits::input_parameter< std::string >::type EndTime(EndTimeSEXP);
+    initFIX(FileLogPath, FileStorePath, ReconnectInterval, SenderCompID, DefaultApplVerID, ResetOnLogon, BeginString, TargetCompID, HeartBtInt, SocketConnectPort, SocketConnectHost, DataDictionary, StartTime, EndTime);
+    return R_NilValue;
+END_RCPP
+}
+// destroyFIX
+void destroyFIX();
+RcppExport SEXP pairFIX_destroyFIX() {
+BEGIN_RCPP
+    Rcpp::RNGScope __rngScope;
+    destroyFIX();
     return R_NilValue;
 END_RCPP
 }

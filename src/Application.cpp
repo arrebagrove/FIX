@@ -11,6 +11,57 @@ Application::Application()
     isLoggedOut = false;
 }
 
+Application::Application(std::string FileLogPath, std::string FileStorePath, int ReconnectInterval,
+            std::string SenderCompID, std::string DefaultApplVerID, std::string ResetOnLogon,
+            std::string BeginString, std::string TargetCompID, int HeartBtInt, 
+            int SocketConnectPort, std::string SocketConnectHost, std::string DataDictionary,
+            std::string StartTime, std::string EndTime)
+{
+ settings.FileLogPath=FileLogPath;settings.FileStorePath=FileStorePath;settings.ReconnectInterval=ReconnectInterval;
+            settings.SenderCompID=SenderCompID;settings.DefaultApplVerID=DefaultApplVerID;settings.ResetOnLogon=ResetOnLogon;
+            settings.BeginString=BeginString;settings.TargetCompID=TargetCompID;settings.HeartBtInt=HeartBtInt; 
+            settings.SocketConnectPort = SocketConnectPort; settings.SocketConnectHost=SocketConnectHost;settings.DataDictionary=DataDictionary;
+            settings.StartTime=StartTime; settings.EndTime=EndTime;
+}
+
+void Application::init()
+{
+  try
+  {
+    std::istringstream settingsStream(settings.toString());
+    FIX::SessionSettings sessionSettings( settingsStream );
+
+    this->isLoggedOn = false;
+    this->isLoggedOut = false;
+    FIX::FileStoreFactory storeFactory( sessionSettings );
+    FIX::FileLogFactory logFactory(sessionSettings);
+    initiator = new FIX::SocketInitiator( *this, storeFactory, sessionSettings, logFactory );
+    initiator->start();
+    while(!initiator->isLoggedOn()) {}
+  }
+  catch ( std::exception & e )
+  {
+    std::cout << e.what();
+  }
+
+}
+
+void Application::destroy()
+{
+  try
+  {
+    initiator->stop();
+    // wait for logout to come
+    while(!initiator->isStopped()) {}
+    delete initiator;
+  }
+  catch ( std::exception & e )
+  {
+    std::cout << e.what();
+  }
+
+}
+
 void Application::onLogon( const FIX::SessionID& sessionID )
 {
   isLoggedOn = true;
@@ -139,9 +190,9 @@ void Application::buy(std::string ticker, double price, double quantity)
     newOrderSingle.set( FIX::Price(price) );
 
     FIX::Header& header = newOrderSingle.getHeader();
-    header.setField( FIX::SenderCompID("direc592") );
-    header.setField( FIX::TargetCompID("IB") );
-    header.setField( FIX::BeginString("FIX.4.2"));
+    header.setField( FIX::SenderCompID(settings.SenderCompID) );
+    header.setField( FIX::TargetCompID(settings.TargetCompID) );
+    header.setField( FIX::BeginString(settings.BeginString));
     FIX::Session::sendToTarget( newOrderSingle );
 }
 
@@ -159,9 +210,9 @@ void Application::sell(std::string ticker, double price, double quantity)
     newOrderSingle.set( FIX::Price(price) );
 
     FIX::Header& header = newOrderSingle.getHeader();
-    header.setField( FIX::SenderCompID("direc592") );
-    header.setField( FIX::TargetCompID("IB") );
-    header.setField( FIX::BeginString("FIX.4.2"));
+    header.setField( FIX::SenderCompID(settings.SenderCompID) );
+    header.setField( FIX::TargetCompID(settings.TargetCompID) );
+    header.setField( FIX::BeginString(settings.BeginString));
     FIX::Session::sendToTarget( newOrderSingle );
 }
 
